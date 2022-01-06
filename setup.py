@@ -26,9 +26,12 @@ import setuptools
 from   setuptools import setup, Extension
 from   setuptools.command.build_ext import build_ext
 
-# Set msvc runtime dll for windows build : Required for windows
+# Clear msvc runtime dll for windog build
+# CygwinCCompiler class is a subclass of UnixCCompiler that handles
+# the Cygwin port of the GNU C compiler to Windows. It also contains
+# the Mingw32CCompiler class which handles the mingw32 port of GCC
 import distutils.cygwinccompiler
-distutils.cygwinccompiler.get_msvcr = lambda: []
+distutils.cygwinccompiler.get_msvcr = lambda:[]
 
 # Package paths e.g. /tmp/pip-req-build-9ljrp27z/
 tmpInstallPath = os.path.dirname( os.path.abspath( __file__ ) )
@@ -116,7 +119,7 @@ def cpp_flag( compiler ):
 class BuildExt( build_ext ):
     
     c_opts = {
-        'msvc'    : ['/EHsc'],
+        'msvc'    : [],
         'unix'    : ['-llapack'],
         'mingw32' : ['-DMS_WIN64']
     }
@@ -138,9 +141,9 @@ class BuildExt( build_ext ):
             opts.append( cpp_flag(self.compiler) )
             if has_flag(self.compiler, '-fvisibility=hidden'):
                 opts.append('-fvisibility=hidden')
-        elif ct == 'msvc':
-            opts.append('/DVERSION_INFO=\\"%s\\"' %
-                        self.distribution.get_version())
+        #elif ct == 'msvc':
+        #    opts.append('/DVERSION_INFO=\\"%s\\"' %
+        #                self.distribution.get_version())
             # opts.append('/link /MACHINE:X86')
 
         for ext in self.extensions:
