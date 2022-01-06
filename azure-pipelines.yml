@@ -124,8 +124,8 @@ steps:
 #    python setup.py build_ext --inplace
 #  displayName: 'Build extensions'
 
-- script: python setup.py bdist_wheel
-  displayName: build pyEDM wheel
+- script: python setup.py bdist_wheel --compiler=mingw32
+  displayName: build pyEDM wheel --compiler=mingw32
   condition: ne( variables['Agent.OS'], 'Linux' )
 
 - publish: $(System.DefaultWorkingDirectory)/dist
