@@ -43,10 +43,10 @@ strategy:
     #   vmImage: 'macos-latest'
     #   build_name: 'MacOS_39'
     #   python.version: '3.9'
-    # MacOS_3.10:
-    #   vmImage: 'macos-latest'
-    #   build_name: 'MacOS_310'
-    #   python.version: '3.10'
+    MacOS_3.10:
+      vmImage: 'macos-latest'
+      build_name: 'MacOS_310'
+      python.version: '3.10'
     # Linux_3.7:
     #   vmImage: 'ubuntu-latest'
     #   build_name: 'manylinux37'
@@ -59,10 +59,10 @@ strategy:
     #   vmImage: 'ubuntu-latest'
     #   build_name: 'manylinux39'
     #   python.version: '3.9'
-    # Linux_3.10:
-    #   vmImage: 'ubuntu-latest'
-    #   build_name: 'manylinux310'
-    #   python.version: '3.10'
+    Linux_3.10:
+      vmImage: 'ubuntu-latest'
+      build_name: 'manylinux310'
+      python.version: '3.10'
 
 pool:
 
