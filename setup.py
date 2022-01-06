@@ -121,7 +121,7 @@ class BuildExt( build_ext ):
         'mingw32' : ['-DMS_WIN64']
     }
 
-    print( "sys.platform" )
+    print( ">>>>>>>>>>> sys.platform" )
     print( sys.platform )
 
     if sys.platform == 'darwin':
@@ -131,7 +131,7 @@ class BuildExt( build_ext ):
         ct   = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
 
-        print( 'self.compiler.compiler_type' )
+        print( '>>>>>>>>>>> self.compiler.compiler_type' )
         print( self.compiler.compiler_type )
         
         if ct == 'unix':
