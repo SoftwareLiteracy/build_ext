@@ -86,7 +86,7 @@ steps:
 
 #- task: BatchScript@1
 #  inputs:
-3    filename: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
+#    filename: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
 #    arguments: 'amd64'
 #    modifyEnvironment: True 
 #  displayName: setup visual studio env on windows
