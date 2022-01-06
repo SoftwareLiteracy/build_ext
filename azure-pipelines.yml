@@ -15,50 +15,50 @@ variables:
 
 strategy:
   matrix:
-    #Windows_3.7:
-    #  vmImage: 'windows-latest'
-    #  build_name: 'Windows_37'
-    #  python.version: '3.7'
-    #Windows_3.8:
-    #  vmImage: 'windows-latest'
-    #  build_name: 'Windows_38'
-    #  python.version: '3.8'
-    #Windows_3.9:
-    #  vmImage: 'windows-2019'
-    #  build_name: 'Windows_39'
-    #  python.version: '3.9'
-    #Windows_3.10:
-    #  vmImage: 'windows-latest'
-    #  build_name: 'Windows_310'
-    #  python.version: '3.10'
-    # MacOS_3.7:
-    #   vmImage: 'macos-latest'
-    #   build_name: 'MacOS_37'
-    #   python.version: '3.7'
-    # MacOS_3.8:
-    #   vmImage: 'macos-latest'
-    #   build_name: 'MacOS_38'
-    #   python.version: '3.8'
-    # MacOS_3.9:
-    #   vmImage: 'macos-latest'
-    #   build_name: 'MacOS_39'
-    #   python.version: '3.9'
-    #MacOS_3.10:
-    #  vmImage: 'macos-latest'
-    #  build_name: 'MacOS_310'
-    #  python.version: '3.10'
-    # Linux_3.7:
-    #   vmImage: 'ubuntu-latest'
-    #   build_name: 'manylinux37'
-    #   python.version: '3.7'
-    # Linux_3.8:
-    #   vmImage: 'ubuntu-latest'
-    #   build_name: 'manylinux38'
-    #   python.version: '3.8'
-    # Linux_3.9:
-    #   vmImage: 'ubuntu-latest'
-    #   build_name: 'manylinux39'
-    #   python.version: '3.9'
+    Windows_3.7:
+      vmImage: 'windows-latest'
+      build_name: 'Windows_37'
+      python.version: '3.7'
+    Windows_3.8:
+      vmImage: 'windows-latest'
+      build_name: 'Windows_38'
+      python.version: '3.8'
+    Windows_3.9:
+      vmImage: 'windows-2019'
+      build_name: 'Windows_39'
+      python.version: '3.9'
+    Windows_3.10:
+     vmImage: 'windows-latest'
+     build_name: 'Windows_310'
+     python.version: '3.10'
+    MacOS_3.7:
+      vmImage: 'macos-latest'
+      build_name: 'MacOS_37'
+      python.version: '3.7'
+    MacOS_3.8:
+      vmImage: 'macos-latest'
+      build_name: 'MacOS_38'
+      python.version: '3.8'
+    MacOS_3.9:
+      vmImage: 'macos-latest'
+      build_name: 'MacOS_39'
+      python.version: '3.9'
+    MacOS_3.10:
+      vmImage: 'macos-latest'
+      build_name: 'MacOS_310'
+      python.version: '3.10'
+    Linux_3.7:
+      vmImage: 'ubuntu-latest'
+      build_name: 'manylinux37'
+      python.version: '3.7'
+    Linux_3.8:
+      vmImage: 'ubuntu-latest'
+      build_name: 'manylinux38'
+      python.version: '3.8'
+    Linux_3.9:
+      vmImage: 'ubuntu-latest'
+      build_name: 'manylinux39'
+      python.version: '3.9'
     Linux_3.10:
       vmImage: 'ubuntu-latest'
       build_name: 'manylinux310'
@@ -84,14 +84,6 @@ steps:
   displayName: manylinux build
   condition: eq( variables['Agent.OS'], 'Linux' )
 
-#- task: BatchScript@1
-#  inputs:
-#    filename: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
-#    arguments: 'amd64'
-#    modifyEnvironment: True 
-#  displayName: setup visual studio env on windows
-#  condition: eq( variables['Agent.OS'], 'Windows_NT' )
-
 - powershell: |
     cp $(System.DefaultWorkingDirectory)\\pyEDM\\etc\\windows\\libopenblas.a $(System.DefaultWorkingDirectory)\\cppEDM\\lib\\openblas.lib
   displayName: 'move window openblas binary'
@@ -103,10 +95,6 @@ steps:
   displayName: setup mingw compiler option for windows build
   condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
-#- powershell: choco install mingw
-#  displayName: 'Install choco mingw'
-#  condition: eq( variables['Agent.OS'], 'Windows_NT' )
-
 - script: |
     pip install --upgrade wheel
     pip install --upgrade setuptools
@@ -114,7 +102,7 @@ steps:
   displayName: install required python modules for pyEDM build
 
 - script: |
-    python setup.py build_ext "--compiler=mingw32"
+  python setup.py build_ext "--compiler=mingw32"
   displayName: 'Build extensions'
   condition: eq( variables['Agent.OS'], 'Windows_NT' )
 

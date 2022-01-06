@@ -80,11 +80,10 @@ class get_pybind_include( object ):
         return pybind11.get_include(self.user)
 
 #----------------------------------------------------------------------
-# As of Python 3.6, CCompiler has a `has_flag` method.
-# cf http://bugs.python.org/issue26689
+# 
 #----------------------------------------------------------------------
 def has_flag( compiler, flagname ):
-    """Return a boolean indicating whether a flag name is supported on
+    """Return a boolean indicating whether a flag is supported on
     the specified compiler."""
     
     import tempfile
@@ -168,12 +167,13 @@ Extension_modules = [
         ],
 
         language           = 'c++',
-        #extra_compile_args = ['-std=c++11'],
+        extra_compile_args = ['-std=c++11'],
         library_dirs       = [ EDM_Lib_Path, '/usr/lib/' ],
+        
         # Note PEP 308: <expression1> if <condition> else <expression2>
         libraries = ['EDM','openblas','gfortran','pthread','m','quadmath'] \
                     if sys.platform.startswith('win') else ['EDM','lapack'],
-        #extra_link_args = []
+        
         extra_link_args = ["-static", "-static-libgfortran", "-static-libgcc"] \
                           if sys.platform.startswith('win') else [],
     ),
