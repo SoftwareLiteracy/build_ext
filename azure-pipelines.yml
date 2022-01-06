@@ -28,9 +28,9 @@ strategy:
       build_name: 'Windows_39'
       python.version: '3.9'
     Windows_3.10:
-     vmImage: 'windows-latest'
-     build_name: 'Windows_310'
-     python.version: '3.10'
+      vmImage: 'windows-latest'
+      build_name: 'Windows_310'
+      python.version: '3.10'
     MacOS_3.7:
       vmImage: 'macos-latest'
       build_name: 'MacOS_37'
@@ -102,7 +102,7 @@ steps:
   displayName: install required python modules for pyEDM build
 
 - script: |
-  python setup.py build_ext "--compiler=mingw32"
+    python setup.py build_ext "--compiler=mingw32"
   displayName: 'Build extensions'
   condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
