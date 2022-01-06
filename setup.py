@@ -123,8 +123,6 @@ class BuildExt( build_ext ):
 
     print( "sys.platform" )
     print( sys.platform )
-    print( 'self.compiler.compiler_type' )
-    print( self.compiler.compiler_type )
 
     if sys.platform == 'darwin':
         c_opts['unix'] += ['-stdlib=libc++', '-mmacosx-version-min=10.7']
@@ -133,6 +131,9 @@ class BuildExt( build_ext ):
         ct   = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
 
+        print( 'self.compiler.compiler_type' )
+        print( self.compiler.compiler_type )
+        
         if ct == 'unix':
             opts.append('-DVERSION_INFO="%s"' % self.distribution.get_version())
             opts.append( cpp_flag(self.compiler) )
