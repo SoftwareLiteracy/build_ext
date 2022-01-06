@@ -121,8 +121,7 @@ class BuildExt( build_ext ):
         'mingw32' : ['-DMS_WIN64']
     }
 
-    print( ">>>>>>>>>>> sys.platform" )
-    print( sys.platform )
+    print( ">>>>>>>>>>> sys.platform: ", sys.platform )
 
     if sys.platform == 'darwin':
         c_opts['unix'] += ['-stdlib=libc++', '-mmacosx-version-min=10.7']
@@ -131,8 +130,8 @@ class BuildExt( build_ext ):
         ct   = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
 
-        print( '>>>>>>>>>>> self.compiler.compiler_type' )
-        print( self.compiler.compiler_type )
+        print( '>>>>>>>>>>> self.compiler.compiler_type: ',
+               self.compiler.compiler_type )
         
         if ct == 'unix':
             opts.append('-DVERSION_INFO="%s"' % self.distribution.get_version())
@@ -214,7 +213,7 @@ setup(
     package_data     = { 'pyEDM' : ['data/*.csv', 'tests/*.py' ]},
     #test_suite      = "tests", # ??? [1]
     install_requires = ['pybind11>=2.3', 'pandas>=0.20.3', 'matplotlib>=2.2'],
-    python_requires  = '>=3',
+    python_requires  = '>=3.6',
     cmdclass         = { 'build_ext' : BuildExt }, # Command/class to build .so
     zip_safe         = False,
 )
