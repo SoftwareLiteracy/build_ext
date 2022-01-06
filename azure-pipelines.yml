@@ -121,7 +121,7 @@ steps:
   displayName: install required python modules for pyEDM build
 
 - script: |
-  python setup.py build_ext --compiler=mingw32
+    python setup.py build_ext "--compiler=mingw32"
   displayName: 'Build extensions'
   condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
