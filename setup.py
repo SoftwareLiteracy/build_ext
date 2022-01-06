@@ -121,6 +121,11 @@ class BuildExt( build_ext ):
         'mingw32' : ['-DMS_WIN64']
     }
 
+    print( "sys.platform" )
+    print( sys.platform )
+    print( 'self.compiler.compiler_type' )
+    print( self.compiler.compiler_type )
+
     if sys.platform == 'darwin':
         c_opts['unix'] += ['-stdlib=libc++', '-mmacosx-version-min=10.7']
 
