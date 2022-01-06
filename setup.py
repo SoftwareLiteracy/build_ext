@@ -1,8 +1,11 @@
-##
+#--------------------------------------------------------------------------
 # Build the pyEDM Python binding to cppEDM.
 #
 # The core/extension library is the C++ cppEDM libEDM.a
 # NOTE: libEDM.a needs to be built with -fPIC. 
+#
+# NOTE: win32 builds are of course, problematic.
+#       ****** We Force the use of mingw32 and do not use msvc ******
 #
 # Bindings to cppEDM are provided via pybind11 in src/bindings/PyBind.cpp
 # and are built as an Extension module into a platform-specific shared
@@ -16,7 +19,7 @@
 #
 # Some of this setup is cloned from pybind11 example setup.py
 # https://github.com/pybind/python_example
-##
+#--------------------------------------------------------------------------
 
 import sys
 import os
@@ -98,15 +101,17 @@ def has_flag( compiler, flagname ):
 #----------------------------------------------------------------------
 def cpp_flag( compiler ):
     """Return the -std=c++[11/14] compiler flag.
-    The c++14 is prefered over c++11 (when it is available)."""
+    The c++14 is prefered over c++11."""
     
-    if has_flag( compiler, '-std=c++14' ):
+    if has_flag( compiler, '-std=c++17' ):
+        return '-std=c++17'
+    elif has_flag( compiler, '-std=c++14' ):
         return '-std=c++14'
     elif has_flag( compiler, '-std=c++11' ):
         return '-std=c++11'
     else:
-        raise RuntimeError('Unsupported compiler -- at least C++11 support '
-                           'is needed!')
+        raise RuntimeError('Unsupported compiler: at least C++11 standard '
+                           'required.')
 
 #----------------------------------------------------------------------
 # Note:

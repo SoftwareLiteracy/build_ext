@@ -15,18 +15,18 @@ variables:
 
 strategy:
   matrix:
-    Windows_3.7:
-      vmImage: 'windows-latest'
-      build_name: 'Windows_37'
-      python.version: '3.7'
-    Windows_3.8:
-      vmImage: 'windows-latest'
-      build_name: 'Windows_38'
-      python.version: '3.8'
-    Windows_3.9:
-      vmImage: 'windows-2019'
-      build_name: 'Windows_39'
-      python.version: '3.9'
+    #Windows_3.7:
+    #  vmImage: 'windows-latest'
+    #  build_name: 'Windows_37'
+    #  python.version: '3.7'
+    #Windows_3.8:
+    #  vmImage: 'windows-latest'
+    #  build_name: 'Windows_38'
+    #  python.version: '3.8'
+    #Windows_3.9:
+    #  vmImage: 'windows-2019'
+    #  build_name: 'Windows_39'
+    #  python.version: '3.9'
     Windows_3.10:
       vmImage: 'windows-latest'
       build_name: 'Windows_310'
@@ -84,13 +84,13 @@ steps:
   displayName: manylinux build
   condition: eq( variables['Agent.OS'], 'Linux' )
 
-- task: BatchScript@1
-  inputs:
-    filename: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
-    arguments: 'amd64'
-    modifyEnvironment: True 
-  displayName: setup visual studio env on windows
-  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+#- task: BatchScript@1
+#  inputs:
+3    filename: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
+#    arguments: 'amd64'
+#    modifyEnvironment: True 
+#  displayName: setup visual studio env on windows
+#  condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
 - powershell: |
     cp $(System.DefaultWorkingDirectory)\\pyEDM\\etc\\windows\\libopenblas.a $(System.DefaultWorkingDirectory)\\cppEDM\\lib\\openblas.lib
