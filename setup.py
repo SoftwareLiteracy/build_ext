@@ -5,7 +5,7 @@
 # NOTE: libEDM.a needs to be built with -fPIC. 
 #
 # NOTE: win32 builds are of course, problematic.
-#       ****** We Force the use of mingw32 and do not use msvc ******
+#       ****** Force the use of mingw32. Do not use msvc ******
 #
 # Bindings to cppEDM are provided via pybind11 in src/bindings/PyBind.cpp
 # and are built as an Extension module into a platform-specific shared
@@ -20,6 +20,8 @@
 # Some of this setup is cloned from pybind11 example setup.py
 # https://github.com/pybind/python_example
 #--------------------------------------------------------------------------
+
+DEBUG_BUILD_pyEDM = False
 
 import sys
 import os
@@ -62,6 +64,25 @@ if not os.path.isfile( os.path.join( EDM_Lib_Path, cppLibName ) ) :
 # Transfer the README.md to the package decsription
 with open(os.path.join(tmpInstallPath, 'README.md')) as f:
     long_description = f.read()
+
+#----------------------------------------------------------------------
+#
+#----------------------------------------------------------------------
+def read_version(*file_paths):
+    '''Read __init__.py to get __version__'''
+    with open(os.path.join( tmpInstallPath, *file_paths ), 'r') as fp:
+        version_file =  fp.read()
+
+    # Why don't we just use re syntax as unbreakable crypto-keys?
+    version_re = r'^__version__ = "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"$'
+    
+    version_match = re.search( version_re, version_file, re.MULTILINE )
+    if version_match:
+        # version_match.group() is: '__version__ = "1.0.0.0"'
+        # isolate just the numeric part between " "
+        version = version_match.group().split('"')[1]
+        return version
+    raise RuntimeError("find_version(): Unable to find version string.")
 
 #----------------------------------------------------------------------
 #
@@ -109,8 +130,8 @@ def cpp_flag( compiler ):
     elif has_flag( compiler, '-std=c++11' ):
         return '-std=c++11'
     else:
-        raise RuntimeError('Unsupported compiler: at least C++11 standard '
-                           'required.')
+        raise RuntimeError('Unsupported compiler: '
+                           'C++11 minimum standard required.')
 
 #----------------------------------------------------------------------
 # Note:
@@ -128,7 +149,8 @@ class BuildExt( build_ext ):
         'mingw32' : ['-DMS_WIN64']
     }
 
-    print( ">>>>>>>>>>> sys.platform: ", sys.platform )
+    if DEBUG_BUILD_pyEDM :
+        print( ">>>>>>>>>>> sys.platform: ", sys.platform )
 
     if sys.platform == 'darwin':
         c_opts['unix'] += ['-stdlib=libc++', '-mmacosx-version-min=10.7']
@@ -137,8 +159,8 @@ class BuildExt( build_ext ):
         ct   = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
 
-        print( '>>>>>>>>>>> self.compiler.compiler_type: ',
-               self.compiler.compiler_type )
+        if DEBUG_BUILD_pyEDM :
+            print( '>>>>>>>>>>> compiler_type: ', self.compiler.compiler_type )
         
         if ct == 'unix':
             opts.append('-DVERSION_INFO="%s"' % self.distribution.get_version())
@@ -163,7 +185,7 @@ Extension_modules = [
         include_dirs = [
             get_pybind_include(), # Path to pybind11 headers
             get_pybind_include( user = True ),
-            EDM_H_Path # Path to cppEDM headers
+            EDM_H_Path            # Path to cppEDM headers
         ],
 
         language           = 'c++',
@@ -178,25 +200,6 @@ Extension_modules = [
                           if sys.platform.startswith('win') else [],
     ),
 ]
-
-#----------------------------------------------------------------------
-#
-#----------------------------------------------------------------------
-def read_version(*file_paths):
-    '''Read __init__.py to get __version__'''
-    with open(os.path.join( tmpInstallPath, *file_paths ), 'r') as fp:
-        version_file =  fp.read()
-
-    # Why don't we just use re syntax as unbreakable crypto-keys?
-    version_re = r'^__version__ = "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"$'
-    
-    version_match = re.search( version_re, version_file, re.MULTILINE )
-    if version_match:
-        # version_match.group() is: '__version__ = "1.0.0.0"'
-        # isolate just the numeric part between " "
-        version = version_match.group().split('"')[1]
-        return version
-    raise RuntimeError("find_version(): Unable to find version string.")
 
 #----------------------------------------------------------------------
 #
@@ -216,7 +219,7 @@ setup(
     ext_modules      = Extension_modules,
     package_data     = { 'pyEDM' : ['data/*.csv', 'tests/*.py' ]},
     #test_suite      = "tests", # ??? [1]
-    install_requires = ['pybind11>=2.3', 'pandas>=0.20.3', 'matplotlib>=2.2'],
+    install_requires = ['pybind11>=2.3', 'pandas>=1.1', 'matplotlib>=2.2'],
     python_requires  = '>=3.6',
     cmdclass         = { 'build_ext' : BuildExt }, # Command/class to build .so
     zip_safe         = False,
