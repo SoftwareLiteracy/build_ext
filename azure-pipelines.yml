@@ -78,9 +78,6 @@ steps:
 #--------- Linux : Install manylinux dependencies
 - bash: |
         python -m pip install cibuildwheel
-#        pip install --upgrade wheel
-#        pip install --upgrade setuptools
-#        pip install -r requirements.txt
         python -m cibuildwheel --output-dir wheelhouse
   displayName: manylinux build
   condition: eq( variables['Agent.OS'], 'Linux' )
